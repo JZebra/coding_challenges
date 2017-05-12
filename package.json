@@ -1,0 +1,14 @@
+{
+  "name": "coding_challenges",
+  "version": "1.0.0",
+  "description": "repo for coding questions from Cracking the Coding Interview",
+  "main": "index.js",
+  "repository": "https://github.com/JZebra/coding_challenges",
+  "author": "John Shen",
+  "license": "MIT",
+  "dependencies": {
+    "path": "^0.12.7",
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.4.5"
+  }
+}
