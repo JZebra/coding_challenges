@@ -1,4 +1,4 @@
-
-export hello = () =>
-    return "hello world"
+export const hello = () => {
+    return "hello world";
+}
 
