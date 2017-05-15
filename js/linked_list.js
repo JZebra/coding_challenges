@@ -26,7 +26,7 @@ export class LinkedList {
         currentNode.next = tail;
     }
 
-    toString() {
+    getValues() {
         let currentNode = this.head;
         let values = []
         while (currentNode !== null) {
@@ -35,4 +35,44 @@ export class LinkedList {
         }
         return values;
     }
+
+    delete(node) {
+        node.prev.next = node.next;
+        if (node.next !== null) {
+            node.next.prev = node.prev;
+        }
+    }
+
+    insert(node, left, right) {
+        left.next = node;
+        node.next = right;
+        node.prev = left;
+        right.prev = node;
+    }
+
+    insertAt(node, position) {
+        let currentNode = this.head;
+        let prev, next;
+        for (var i = 0; i < position; i++) {
+            prev = currentNode
+            currentNode = currentNode.next;
+            next = currentNode.next;
+        }
+        this.insert(node, prev, next);
+    }
+
+    dedup() {
+        let seenValues = new Set([]);
+        let currentNode = this.head;
+        while (currentNode !== null) {
+            if (seenValues.has(currentNode.value)) {
+                this.delete(currentNode);
+            } else {
+                seenValues.add(currentNode.value);
+            }
+            currentNode = currentNode.next;
+        }
+    }
+
+
 }

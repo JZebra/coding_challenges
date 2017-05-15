@@ -15,6 +15,6 @@
     "jest": "^20.0.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --watch"
   }
 }
