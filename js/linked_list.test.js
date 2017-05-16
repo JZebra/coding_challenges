@@ -1,4 +1,4 @@
-import { ListNode, LinkedList } from './linked_list';
+import { ListNode, LinkedList, sumLists } from './linked_list';
 
 describe('LinkedList', () => {
     it('creates a linked list with each node pointing to the next node', () => {
@@ -65,5 +65,14 @@ describe('LinkedList', () => {
             }
             currentNode = currentNode.next
         }
+    });
+})
+
+describe('sumLists', () => {
+    it('Sums two numbers represented by linked lists, where each node is a digit.', () => {
+        const list1 = new LinkedList([7, 1, 6]);
+        const list2 = new LinkedList([5, 9, 2]);
+        const sumList = sumLists(list1, list2);
+        expect(sumList.getValues()).toEqual(expect.arrayContaining([2, 1, 9]));
     });
 })

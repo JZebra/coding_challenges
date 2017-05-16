@@ -127,3 +127,16 @@ export class LinkedList {
         }
     }
 }
+
+// Sum two numbers represented by linked lists, where each node is a digit.
+// eg, 617 + 295 = 912 is represented by
+// (7 -> 1 -> 6) + (5 -> 9 -> 2) = (2 -> 1 -> 9)
+export const sumLists = (list1, list2) => {
+    const sum = listToInt(list1) + listToInt(list2);
+    const sumArray = sum.toString(10).split('').map(Number);
+    return new LinkedList(sumArray);
+}
+
+const listToInt = (list) => {
+    return parseInt(list.getValues().reverse().join(''));
+}
