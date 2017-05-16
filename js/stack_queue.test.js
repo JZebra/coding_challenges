@@ -26,6 +26,19 @@ describe('Stack', () => {
         expect(stack.pop().value).toBe(42);
         expect(stack.pop().value).toBe('stack it');
     });
+    test('min() returns the min value in the stack', () => {
+        expect(stack.min()).toBe(null);
+        stack.pushValue(42)
+        expect(stack.min()).toBe(42);
+        stack.pushValue(8)
+        expect(stack.min()).toBe(8);
+        stack.pushValue(8)
+        expect(stack.min()).toBe(8);
+        stack.pushValue(5)
+        expect(stack.min()).toBe(5);
+        stack.pushValue(23)
+        expect(stack.min()).toBe(5);
+    });
 });
 
 
