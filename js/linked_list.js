@@ -34,7 +34,7 @@ export class LinkedList {
 
     prepend(node) {
         if (node === this.head) {
-            console.log(node.value)
+            throw new Error(`Cannot call prepend on the head`);
         }
         let oldHead = this.head;
         oldHead.prev = node;
