@@ -49,6 +49,43 @@ export class Stack {
     }
 }
 
+export class SetOfStacks {
+    constructor(maxStackSize=10) {
+        this.maxStackSize = maxStackSize;
+        // this.stacks = new Stack();
+        this.topStack = new Stack();
+        this.stackHeight = 0;
+    }
+
+    pushToNewStack(node) {
+        const oldTop = this.topStack.top;
+        this.topStack = new Stack();
+        this.topStack.push(node);
+        this.topStack.top.next = oldTop;
+        this.stackHeight = 0;
+    }
+
+    push(node) {
+        if (this.stackHeight < this.maxStackSize) {
+            // add to the top stack
+            this.topStack.push(node);
+        } else {
+            // create a new stack, assign the new stack as the top stack, push into the top stack.
+            this.pushToNewStack(node);
+        }
+        this.stackHeight++;
+    }
+
+    pushValue(value) {
+        const node = new Node(value);
+        this.push(node);
+    }
+
+    pop() {
+        return this.topStack.pop();
+    }
+}
+
 export class Queue {
     constructor() {
         this.next = null;
@@ -91,40 +128,44 @@ export class Queue {
     }
 }
 
-export class SetOfStacks {
-    constructor(maxStackSize=10) {
-        this.maxStackSize = maxStackSize;
-        // this.stacks = new Stack();
-        this.topStack = new Stack();
-        this.stackHeight = 0;
+export class QueueOfStacks {
+    constructor() {
+        this.stack = new Stack();
+        this.flippedStack = new Stack();
     }
 
-    pushToNewStack(node) {
-        const oldTop = this.topStack.top;
-        this.topStack = new Stack();
-        this.topStack.push(node);
-        this.topStack.top.next = oldTop;
-        this.stackHeight = 0;
+    add(node) {
+        this.stack.push(node);
     }
 
-    push(node) {
-        if (this.stackHeight < this.maxStackSize) {
-            // add to the top stack
-            this.topStack.push(node);
-        } else {
-            // create a new stack, assign the new stack as the top stack, push into the top stack.
-            this.pushToNewStack(node);
+    addValue(value) {
+        this.stack.pushValue(value);
+    }
+
+    shift() {
+        this.flip();
+        const shiftedNode = this.flippedStack.pop();
+        this.unflip();
+        return shiftedNode;
+    }
+
+    flip() {
+        while (!this.stack.isEmpty()) {
+            this.flippedStack.push(this.stack.pop());
         }
-        this.stackHeight++;
     }
 
-    pushValue(value) {
-        const node = new Node(value);
-        this.push(node);
+    unflip() {
+        while (!this.flippedStack.isEmpty()) {
+                this.stack.push(this.flippedStack.pop());
+        }
     }
 
-    pop() {
-        return this.topStack.pop();
+    peek() {
+        this.flip();
+        const topNode = this.flippedStack.peek();
+        this.unflip();
+        return topNode;
     }
 }
 

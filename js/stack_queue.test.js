@@ -1,4 +1,4 @@
-import { Stack, Queue, SetOfStacks } from './stack_queue';
+import { Stack, SetOfStacks, Queue, QueueOfStacks  } from './stack_queue';
 
 describe('Stack', () => {
     let stack;
@@ -97,3 +97,18 @@ describe('SetOfStacks', () => {
         expect(setOfStacks.pop().value).toBe('earth');
     });
 });
+
+describe('QueueOfStacks', () => {
+    let queueOfStacks;
+    beforeEach(() => {
+        queueOfStacks = new QueueOfStacks();
+        queueOfStacks.addValue('QoS');
+    });
+    test('shift() removes the elements according to FIFO', () => {
+        queueOfStacks.addValue('remove second')
+        queueOfStacks.addValue('remove third')
+        expect(queueOfStacks.shift().value).toBe('QoS');
+        expect(queueOfStacks.shift().value).toBe('remove second');
+        expect(queueOfStacks.shift().value).toBe('remove third');
+    });
+})
