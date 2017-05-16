@@ -11,19 +11,36 @@ export class LinkedList {
         // copy the array so that we don't transform the input itemArray
         let items = itemArray.slice();
         this.head = new ListNode(items.shift());
-        items.map(item => this.append(item));
+        items.map(item => this.appendValue(item));
     }
 
-    append(value) {
+    appendValue(value) {
+        let newTail = new ListNode(value, null, null);
+        this.append(newTail)
+    }
+
+    append(node) {
         let currentNode = this.head;
         let prev;
-        while (currentNode.next !== null) {
+        // set prev to point to the tail
+        while (currentNode !== null) {
             prev = currentNode;
             currentNode = currentNode.next;
         }
+        node.prev = prev;
+        prev.next = node;
+        node.next = null;
+    }
 
-        let tail = new ListNode(value, prev, null);
-        currentNode.next = tail;
+    prepend(node) {
+        if (node === this.head) {
+            console.log(node.value)
+        }
+        let oldHead = this.head;
+        oldHead.prev = node;
+        node.prev = null;
+        node.next = oldHead;
+        this.head = node;
     }
 
     getValues() {
@@ -37,13 +54,24 @@ export class LinkedList {
     }
 
     delete(node) {
-        node.prev.next = node.next;
+        // edge case, node == head
+        if (node.prev == null) {
+            this.head = node.next
+            this.head.prev = null;
+        } else {
+            node.prev.next = node.next;
+        }
+
+        // edge case, node == tail
         if (node.next !== null) {
             node.next.prev = node.prev;
         }
     }
 
     insert(node, left, right) {
+        if (left === null || right === null) {
+            throw new Error('Cannot call insert() with null neighbors')
+        }
         left.next = node;
         node.next = right;
         node.prev = left;
@@ -52,13 +80,12 @@ export class LinkedList {
 
     insertAt(node, position) {
         let currentNode = this.head;
-        let prev, next;
+        let prev;
         for (var i = 0; i < position; i++) {
             prev = currentNode
             currentNode = currentNode.next;
-            next = currentNode.next;
         }
-        this.insert(node, prev, next);
+        this.insert(node, prev, currentNode);
     }
 
     dedup() {
@@ -74,5 +101,29 @@ export class LinkedList {
         }
     }
 
+    // Return the index of the first node with the given value
+    findIndex(value) {
+        let currentNode = this.head;
+        let currentIndex = 0;
+        while (currentNode !== null) {
+            if (currentNode.value === value) {
+                return currentIndex
+            }
+            currentNode = currentNode.next
+        }
+        throw new Error(`No node with value ${value} was found`)
+    }
 
+    partition(value) {
+        let currentNode = this.head;
+        while (currentNode !== null) {
+            let nextNode = currentNode.next;
+            if (currentNode.value < value) {
+                // prepend() is constant time whereas append() is linear
+                this.delete(currentNode)
+                this.prepend(currentNode);
+            }
+            currentNode = nextNode;
+        }
+    }
 }
