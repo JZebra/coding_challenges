@@ -66,6 +66,15 @@ describe('LinkedList', () => {
             currentNode = currentNode.next
         }
     });
+    it('isPalindrome() returns true if the list is a palindrome', () => {
+        const testArray1 = [1, 2, 3];
+        const linkedList1 = new LinkedList(testArray1);
+        expect(linkedList1.isPalindrome()).toBe(false);
+        const testArray2 = [4, 2, 12, 2, 4];
+        const linkedList2 = new LinkedList(testArray2);
+        expect(linkedList2.isPalindrome()).toBe(true);
+
+    })
 })
 
 describe('sumLists', () => {

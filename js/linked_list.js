@@ -126,6 +126,18 @@ export class LinkedList {
             currentNode = nextNode;
         }
     }
+
+    isPalindrome() {
+        let values = this.getValues();
+        let currentNode = this.head;
+        while (currentNode !== null) {
+            if (currentNode.value !== values.pop()) {
+                return false;
+            }
+            currentNode = currentNode.next;
+        }
+        return true;
+    }
 }
 
 // Sum two numbers represented by linked lists, where each node is a digit.
@@ -140,3 +152,5 @@ export const sumLists = (list1, list2) => {
 const listToInt = (list) => {
     return parseInt(list.getValues().reverse().join(''));
 }
+
+
