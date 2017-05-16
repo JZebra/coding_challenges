@@ -138,6 +138,21 @@ export class LinkedList {
         }
         return true;
     }
+
+    // If the list has an internal loop, returns the node at the beginning of the loop
+    // Returns null otherwise
+    getLoopNode() {
+        let seenNodes = new Set();
+        let currentNode = this.head;
+        while (currentNode !== null) {
+            if (seenNodes.has(currentNode)) {
+                return currentNode;
+            }
+            seenNodes.add(currentNode);
+            currentNode = currentNode.next;
+        }
+        return null;
+    }
 }
 
 // Sum two numbers represented by linked lists, where each node is a digit.

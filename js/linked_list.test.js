@@ -73,8 +73,22 @@ describe('LinkedList', () => {
         const testArray2 = [4, 2, 12, 2, 4];
         const linkedList2 = new LinkedList(testArray2);
         expect(linkedList2.isPalindrome()).toBe(true);
+    });
+    it('getLoopNode() returns a node if the list has an internal loop', () => {
+        const testArray = [2, 3, 3, 2];
+        const linkedList = new LinkedList(testArray);
+        expect(linkedList.getLoopNode()).toBe(null);
 
-    })
+        const testNode = linkedList.head.next;
+        // append testNode to the tail. Don't use the LinkedList.append() function
+        // because it will overwrite the .prev attr on the testNode.
+        let currentNode = linkedList.head;
+        while (currentNode.next !== null) {
+            currentNode = currentNode.next;
+        }
+        currentNode.next = testNode;
+        expect(linkedList.getLoopNode()).toBe(testNode);
+    });
 })
 
 describe('sumLists', () => {
