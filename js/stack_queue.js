@@ -91,6 +91,44 @@ export class Queue {
     }
 }
 
+export class SetOfStacks {
+    constructor(maxStackSize=10) {
+        this.maxStackSize = maxStackSize;
+        // this.stacks = new Stack();
+        this.topStack = new Stack();
+        this.stackHeight = 0;
+    }
+
+    pushToNewStack(node) {
+        const oldTop = this.topStack.top;
+        this.topStack = new Stack();
+        this.topStack.push(node);
+        this.topStack.top.next = oldTop;
+        this.stackHeight = 0;
+    }
+
+    push(node) {
+        if (this.stackHeight < this.maxStackSize) {
+            // add to the top stack
+            this.topStack.push(node);
+        } else {
+            // create a new stack, assign the new stack as the top stack, push into the top stack.
+            this.pushToNewStack(node);
+        }
+        this.stackHeight++;
+    }
+
+    pushValue(value) {
+        const node = new Node(value);
+        this.push(node);
+    }
+
+    pop() {
+        return this.topStack.pop();
+    }
+}
+
+// Helper functions
 // Number(string) returns NaN, Number(null) returns 0. Both are falsy.
 function getMin(val1, val2) {
     const num1 = Number(val1)

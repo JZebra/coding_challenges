@@ -1,4 +1,4 @@
-import { Stack, Queue } from './stack_queue';
+import { Stack, Queue, SetOfStacks } from './stack_queue';
 
 describe('Stack', () => {
     let stack;
@@ -67,5 +67,33 @@ describe('Queue', () => {
         queue.addValue(42);
         expect(queue.shift().value).toBe('queue it');
         expect(queue.shift().value).toBe(42);
+    });
+});
+
+describe('SetOfStacks', () => {
+    let setOfStacks;
+    beforeEach(() => {
+        setOfStacks = new SetOfStacks(3);
+        setOfStacks.pushValue('SoS');
+    });
+    test('push() creates a new stack when it exceeds the maxStackSize', () => {
+        const firstStack = setOfStacks.topStack;
+        expect(setOfStacks.stackHeight).toBe(1);
+        setOfStacks.pushValue('earth')
+        setOfStacks.pushValue('wind')
+        expect(setOfStacks.stackHeight).toBe(3);
+        setOfStacks.pushValue('fire')
+        expect(setOfStacks.stackHeight).toBe(1);
+        expect(setOfStacks.topStack).not.toBe(firstStack);
+    });
+    test('pop() will pop from the next stack if the topStack is empty', () => {
+        setOfStacks.pushValue('earth')
+        setOfStacks.pushValue('wind')
+        setOfStacks.pushValue('fire')
+        setOfStacks.pushValue('water')
+        expect(setOfStacks.pop().value).toBe('water');
+        expect(setOfStacks.pop().value).toBe('fire');
+        expect(setOfStacks.pop().value).toBe('wind');
+        expect(setOfStacks.pop().value).toBe('earth');
     });
 });
