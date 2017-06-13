@@ -1,4 +1,4 @@
-import { Stack, SetOfStacks, Queue, QueueOfStacks  } from './stack_queue';
+import { Stack, SetOfStacks, Queue, QueueOfStacks, sortStack  } from './stack_queue';
 
 describe('Stack', () => {
     let stack;
@@ -38,6 +38,19 @@ describe('Stack', () => {
         expect(stack.min()).toBe(5);
         stack.pushValue(23)
         expect(stack.min()).toBe(5);
+    });
+    test('sortStack() sorts a stack in place', () => {
+        stack = new Stack();
+        stack.pushValue(3)
+        stack.pushValue(6)
+        stack.pushValue(3)
+        stack.pushValue(1)
+        const sorted = sortStack(stack);
+        expect(sorted.pop().value).toBe(1);
+        expect(sorted.pop().value).toBe(3);
+        expect(sorted.pop().value).toBe(3);
+        expect(sorted.pop().value).toBe(6);
+        expect(sorted.isEmpty()).toBe(true);
     });
 });
 

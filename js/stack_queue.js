@@ -184,3 +184,25 @@ function getMin(val1, val2) {
         return null;
     }
 }
+
+export function sortStack(stack) {
+    // We're restricted to using only one additional stack.
+    let sortedStack = new Stack();
+    // store top element from stack
+    while (stack.top !== null) {
+        let topNode = stack.pop();
+        sortPush(topNode, stack, sortedStack);
+    }
+    return sortedStack;
+}
+
+
+    // stack should be empty or sorted such that the smallest element is on the top
+function sortPush(node, stack, sortedStack) {
+    if (sortedStack.top === null || sortedStack.top.value >= node.value) {
+        sortedStack.push(node)
+        return;
+    }
+    stack.push(sortedStack.pop());
+    return sortPush(node, stack, sortedStack)
+}
