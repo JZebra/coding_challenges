@@ -9,5 +9,5 @@ Run tests with `npm test`
 
 
 ## Python
-
+Install requirements: `pip install requirements.txt'
 
