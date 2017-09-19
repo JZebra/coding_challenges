@@ -4,7 +4,7 @@ const twoSum = (arr, target) => {
 
     // walk input arr and see if any diffs match
     for (var i = 0; i < arr.length; i++) {
-        let j = diffs.findIndex(el => arr[i] - el === 0)
+        let j = diffs.findIndex((el, idx) => arr[i] - el === 0 && idx !== i)
         if (j > 0) {
             return [i, j]
         }
