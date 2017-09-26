@@ -16,6 +16,7 @@ const evenTree = input => {
         }
     }
     // reduce the count by one for the rootNode, which is always even
+    console.log(count - 1)
     return count - 1
 }
 
@@ -59,6 +60,6 @@ class Node {
     }
 }
 
-// sample input from problem
-let input = '10 9\n2 1\n3 1\n4 3\n5 2\n6 1\n7 2\n8 6\n9 8\n10 8'
-console.log(evenTree(input))
+const fileTools = require('./file.js');
+const input = fileTools.readTextFile('./even-tree-testcases/input/input00.txt')
+evenTree(input)
