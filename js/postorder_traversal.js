@@ -14,7 +14,7 @@
 
 // recursive solution is trivial
 const postorderTraversalRecursive = (root) => {
-  return traverse(root).reverse();
+  return traverseRecursive(root).reverse();
 };
 
 const traverseRecursive = (root) => {
@@ -26,4 +26,19 @@ const traverseRecursive = (root) => {
   return list;
 };
 
-
+// huh. Iterative isn't much harder
+const postorderTraversal = (root) => {
+  // traverse tree with dfs
+  const values = [];
+  const stack = [root];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (current === null) {
+      continue;
+    }
+    values.push(current.val);
+    stack.push(current.left);
+    stack.push(current.right);
+  }
+  return values.reverse();
+};
