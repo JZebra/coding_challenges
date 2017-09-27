@@ -12,8 +12,8 @@ class UndirectedEdge {
 class Graph {
   constructor(numVertices) {
     this.vertexMap = {};
-    // vertex values are 1 indexed
     for (let i = 0; i < numVertices; i += 1) {
+      // vertex values are 1 indexed
       this.addToSet(i + 1);
     }
   }
@@ -46,7 +46,13 @@ class Graph {
       return false;
     }
 
-    v1Root.parent = v2Root;
+    if (v1Root.rank < v2Root.rank) {
+      v1Root.parent = v2Root;
+      v2Root.rank = v1Root.rank + 1;
+    } else if (v1Root.rank >= v2Root.rank) {
+      v2Root.parent = v1Root;
+      v1Root.rank = v2Root.rank + 1;
+    }
     return true;
   }
 }
@@ -68,12 +74,11 @@ const minSpanningTree = (input) => {
   // sort by ascending weight
   const sortedEdges = parseInputAndCreateEdges(input).sort((a, b) => a.weight - b.weight);
   const graph = new Graph(numVertices);
-  // we can break early if the total number of edges == numVertices - 1
+  // todo: we can break early if the total number of edges == numVertices - 1
   let totalWeight = 0;
   sortedEdges.forEach((edge) => {
-    // console.log(edge, totalWeight)
     // check if vertices are disjoint
-    // if they are, join them
+    // if they are, join them and add the edge weight to totalWeight
     // if they are not (cycle), continue
     if (graph.union(edge.node1, edge.node2)) {
       totalWeight += edge.weight;
