@@ -6,7 +6,6 @@
  * @return {number}
  */
 
-
 // greedy solution: reverse sort the coin denominations, decrement amount by largest
 // denomination every time until amount === 0
 // doesn't backtrack, so does not always find correct solution
@@ -60,7 +59,7 @@ const coinChangeRecursive = (coins, remaining, cache) => {
   return cache[remaining];
 };
 
-const coinChange = (coins, amount) => {
+const coinChangeRec = (coins, amount) => {
   const cache = {};
   // reverse sort coins, this actually avoids stack overflows if there are
   // small denomination coins
@@ -68,7 +67,26 @@ const coinChange = (coins, amount) => {
   return coinChangeRecursive(sortedCoins, amount, cache);
 };
 
+// adapted from https://leetcode.com/problems/coin-change/solution/
+const coinChange = (coins, amount) => {
+  // init subproblem map. Use amount + 1 because loop will be 1-indexed
+  const max = amount + 1
+  const minCounts = Array(max).fill(max);
+  minCounts[0] = 0;
+  // loop from 1 to amount
+  for (let i = 1; i < max; i++) {
+    coins.forEach((coin) => {
+      // ignore coins that are larger than the current subproblem amount
+      if (coin <= i) {
+        minCounts[i] = Math.min(minCounts[i], minCounts[i - coin] + 1);
+      }
+    });
+  }
+  return minCounts[amount] > amount ? -1 : minCounts[amount];
+}
+
 console.log(coinChange([2], 1)); // -1
 console.log(coinChange([1, 7, 10], 14)); // 2
 console.log(coinChange([186, 419, 83, 408], 6249)); // 20
-console.log(coinChange([3, 7, 405, 436], 8839));
+// This exceeds stack size on the recursive solution if we do not reverse sort the coins
+console.log(coinChange([3, 7, 405, 436], 8839)); // 25
