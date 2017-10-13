@@ -18,10 +18,6 @@
 // 1. highest path value with the current node as the root (considering left and right children)
 // 2. max(left path, right path), to be used by parent nodes.
 const maxPathSum = (root) => {
-  if (!root) {
-    return 0;
-  }
-
   const postOrderTrav = (nodeDetails) => {
     const { node, bestTerminalPath, bestContinuingPath } = nodeDetails;
     if (!node) {
@@ -50,4 +46,24 @@ const maxPathSum = (root) => {
     bestContinuingPath: 0,
   };
   return postOrderTrav(startingNodeDetails).bestTerminalPath;
+};
+
+// better solution
+const maxPathSum = (root) => {
+  const postOrderTrav = (node) => {
+    if (!node) {
+      return 0;
+    }
+
+    // if the path is negative, ignore it
+    const leftVal = Math.max(postOrderTrav(node.left), 0);
+    const rightVal = Math.max(postOrderTrav(node.right), 0);
+
+    maxVal = Math.max(maxVal, leftVal + rightVal + node.val);
+    return Math.max(leftVal, rightVal) + node.val;
+  };
+
+  let maxVal = 0 - Number.MAX_SAFE_INTEGER;
+  postOrderTrav(root);
+  return maxVal;
 };
