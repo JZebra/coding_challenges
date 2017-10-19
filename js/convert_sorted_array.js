@@ -1,12 +1,6 @@
 // https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/
 
-class TreeNode {
-  constructor(val) {
-    this.val = val;
-    this.left = null;
-    this.right = null;
-  }
-}
+const TreeNode = require('./leetcode_data_structures.js').TreeNode;
 
 // recursively generate a BST by splitting nums into pivot, left, and right.
 const genTree = (nums) => {
@@ -27,17 +21,10 @@ const genTree = (nums) => {
 };
 
 /**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
-
-/**
  * @param {number[]} nums
  * @return {TreeNode}
  */
+
 const sortedArrayToBST = (nums) => {
   return genTree(nums);
 };
