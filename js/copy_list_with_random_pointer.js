@@ -2,69 +2,31 @@
 
 const RandomListNode = require('./leetcode_data_structures.js').RandomListNode;
 
-// find a node with the same label as target.label
-// returns null if no node is found or either parameter is falsy
-// const findNode = (head, target) => {
-//   if (!head || !target) {
-//     return null;
-//   }
-//   let currentNode = head;
-//   while (currentNode) {
-//     // if (currentNode.label === label && currentNode.next.label === nextLabel) {
-//     if (currentNode.label === target.label) {
-//       return currentNode;
-//     }
-//     currentNode = currentNode.next;
-//   }
-//   return null;
-// };
-
 /**
  * @param {RandomListNode} head
  * @return {RandomListNode}
  */
 const copyRandomList = (head) => {
-  const cache = {};
-  const copyList = (head) => {
-    if (!head) {
-      return null;
-    }
-    let currentNode = head;
-    const copyHead = new RandomListNode();
-    let currentCopyNode = copyHead;
-    while (currentNode) {
-      currentCopyNode.label = currentNode.label;
-      // memoize a map of string representation of node: node object
-      cache[JSON.stringify(currentCopyNode)] = currentCopyNode;
-      if (currentNode.next) {
-        currentCopyNode.next = new RandomListNode();
-      }
-      currentNode = currentNode.next;
-      currentCopyNode = currentCopyNode.next;
-    }
-    return copyHead;
-  };
-
-  let currentNode = head;
-  const copy = copyList(head);
-  let currentCopyNode = copy;
-  while (currentNode) {
-    // walk the linked list and find the node that the random pointer refers to
-    // const node = findNode(head, currentNode.random.label);
-    // walk the copy and find the same node and assign copyNode.random
-    if (currentNode.random) {
-      // detect cycle
-      if (currentNode.random.label === currentNode.label && currentNode.random.next === currentNode.next) {
-        currentCopyNode.random = currentCopyNode;
-      } else {
-        const copyNode = cache[JSON.stringify(currentNode)];
-        currentCopyNode.random = copyNode;
-      }
-    }
-    currentNode = currentNode.next;
-    currentCopyNode = currentCopyNode.next;
+  const cache = new Map();
+  if (!head) {
+    return null;
   }
-  return copy;
+  // create copy nodes
+  let currentNode = head;
+  while (currentNode) {
+    cache.set(currentNode, new RandomListNode(currentNode.label));
+    currentNode = currentNode.next;
+  }
+
+  // assign the .next and .random pointers
+  currentNode = head;
+  while (currentNode) {
+    const copyNode = cache.get(currentNode);
+    copyNode.next = currentNode.next ? cache.get(currentNode.next) : null;
+    copyNode.random = currentNode.random ? cache.get(currentNode.random) : null;
+    currentNode = currentNode.next;
+  }
+  return cache.get(head);
 };
 
 // 4 -> 2 -> -5 -> 10
@@ -87,4 +49,3 @@ console.log(copyRandomList(n0));
 const m0 = new RandomListNode(-1);
 m0.random = m0;
 console.log(copyRandomList(m0));
-
