@@ -5,13 +5,11 @@
  * @return {string[][]}
  */
 
-const letters = (str) => {
-  return str.split('').sort();
-};
+const letters = (str) => { str.split('').sort(); };
 
 const groupAnagrams = (strs) => {
   const seenMap = {};
-  strs.forEach(word => {
+  strs.forEach((word) => {
     const wordLetters = letters(word);
     if (wordLetters in seenMap) {
       seenMap[wordLetters].push(word);
@@ -20,5 +18,5 @@ const groupAnagrams = (strs) => {
     }
   });
 
-  return Object.values(seenMap).map(wordList => { return wordList.sort() });
+  return Object.values(seenMap).map((wordList) => { return wordList.sort(); });
 };
