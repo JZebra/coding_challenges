@@ -12,14 +12,19 @@ class Node {
     this.children = {};
   }
 
-  // todo: write setter functions for children and isWord
+  setIsWord(status) {
+    this.isWord = status;
+  }
+
+  addChild(label, child) {
+    this.children[label] = child;
+  }
 }
 
 class Trie {
   constructor() {
     this.root = new Node('');
   }
-
 
   /**
    * Inserts a word into the trie.
@@ -29,14 +34,14 @@ class Trie {
   insert(word) {
     const insertHelper = (node, str) => {
       if (str.length === 0) {
-        node.isWord = true;
+        node.setIsWord(true);
         return null;
       }
 
       // create node if none exists
       if (!node.children[str[0]]) {
         const newNode = new Node(str[0]);
-        node.children[str[0]] = newNode;
+        node.addChild(str[0], newNode);
       }
 
       // recurse down
