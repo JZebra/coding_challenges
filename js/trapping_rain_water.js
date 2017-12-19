@@ -6,8 +6,6 @@
  */
 const trap = (heightArr) => {
   let leftMax = heightArr[0];
-  // let right = heightArr.length;
-  // let rightMax = heightArr[right];
   let sum = 0;
 
   for (let i = 0; i < heightArr.length - 1; i++) {
