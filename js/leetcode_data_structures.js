@@ -1,3 +1,10 @@
+class ListNode {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
 class RandomListNode {
   constructor(label) {
     this.label = label;
@@ -16,3 +23,4 @@ class TreeNode {
 
 module.exports.RandomListNode = RandomListNode;
 module.exports.TreeNode = TreeNode;
+module.exports.ListNode = ListNode;
