@@ -43,6 +43,11 @@ export class LinkedList {
     this.head = node;
   }
 
+  prependValue(value) {
+    const node = new ListNode(value);
+    this.prepend(node);
+  }
+
   getValues() {
     let currentNode = this.head;
     let values = [];
