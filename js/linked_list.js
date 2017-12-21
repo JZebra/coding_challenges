@@ -1,4 +1,4 @@
-export class ListNode {
+class ListNode {
   constructor(value, prev = null, next = null) {
     this.value = value;
     this.prev = prev;
@@ -6,11 +6,13 @@ export class ListNode {
   }
 }
 
-export class LinkedList {
+class LinkedList {
   constructor(itemArray) {
     // copy the array so that we don't transform the input itemArray
     const items = itemArray.slice();
     this.head = new ListNode(items.shift());
+    // tail will be set by the append operation
+    this.tail = null;
     items.map(item => this.appendValue(item));
   }
 
@@ -30,6 +32,7 @@ export class LinkedList {
     node.prev = prev;
     prev.next = node;
     node.next = null;
+    this.tail = node;
   }
 
   prepend(node) {
@@ -60,22 +63,30 @@ export class LinkedList {
 
   delete(node) {
     // edge case, node == head
-    if (node.prev == null) {
-      this.head = node.next
+    if (node.prev === null) {
+      this.head = node.next;
       this.head.prev = null;
     } else {
       node.prev.next = node.next;
     }
 
     // edge case, node == tail
-    if (node.next !== null) {
-      node.next.prev = node.prev;
+    if (node.next === null) {
+      console.log(`setting tail to ${node.prev}`);
+      this.tail = node.prev;
+      node.prev.next = null;
+      node.prev = null;
     }
+  }
+
+  pop() {
+    console.log('popping', this.tail)
+    this.delete(this.tail);
   }
 
   insert(node, left, right) {
     if (left === null || right === null) {
-      throw new Error('Cannot call insert() with null neighbors')
+      throw new Error('Cannot call insert() with null neighbors');
     }
     left.next = node;
     node.next = right;
@@ -166,8 +177,10 @@ const listToInt = list => parseInt(list.getValues().reverse().join(''), 10);
 // Sum two numbers represented by linked lists, where each node is a digit.
 // eg, 617 + 295 = 912 is represented by
 // (7 -> 1 -> 6) + (5 -> 9 -> 2) = (2 -> 1 -> 9)
-export const sumLists = (list1, list2) => {
+const sumLists = (list1, list2) => {
   const sum = listToInt(list1) + listToInt(list2);
   const sumArray = sum.toString(10).split('').map(Number);
   return new LinkedList(sumArray);
 };
+
+module.exports = { ListNode, LinkedList, sumLists };
