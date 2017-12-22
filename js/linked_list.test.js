@@ -27,6 +27,22 @@ describe('LinkedList', () => {
       currentNode = currentNode.prev;
     });
   });
+  it('tracks the tail node', () => {
+    const linkedList = new LinkedList([]);
+    linkedList.appendValue(2);
+    expect(linkedList.tail.value).toBe(2);
+    linkedList.appendValue(3);
+    linkedList.appendValue(9);
+    expect(linkedList.tail.value).toBe(9);
+  });
+  it('pop() will remove the tail and set it to the previous node', () => {
+    const testArray = [4, 2, 6, 12, 2];
+    const linkedList = new LinkedList(testArray);
+    linkedList.pop();
+    expect(linkedList.tail.value).toBe(12);
+    linkedList.pop();
+    expect(linkedList.tail.value).toBe(6);
+  });
   it('getValues returns the values of each node in order', () => {
     const testArray = [4, 2, 6, 12, 2];
     const linkedList = new LinkedList(testArray);

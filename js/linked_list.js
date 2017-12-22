@@ -22,15 +22,11 @@ class LinkedList {
   }
 
   append(node) {
-    let currentNode = this.head;
-    let prev;
-    // set prev to point to the tail
-    while (currentNode !== null) {
-      prev = currentNode;
-      currentNode = currentNode.next;
+    if (!this.tail) {
+      this.tail = this.head;
     }
-    node.prev = prev;
-    prev.next = node;
+    this.tail.next = node;
+    node.prev = this.tail;
     node.next = null;
     this.tail = node;
   }
@@ -72,7 +68,6 @@ class LinkedList {
 
     // edge case, node == tail
     if (node.next === null) {
-      console.log(`setting tail to ${node.prev}`);
       this.tail = node.prev;
       node.prev.next = null;
       node.prev = null;
@@ -80,7 +75,6 @@ class LinkedList {
   }
 
   pop() {
-    console.log('popping', this.tail)
     this.delete(this.tail);
   }
 
