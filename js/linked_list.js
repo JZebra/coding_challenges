@@ -16,11 +16,19 @@ class LinkedList {
     items.map(item => this.appendValue(item));
   }
 
+  /**
+   * @param {number} value
+   * @return {ListNode} appended node
+   */
   appendValue(value) {
     const newTail = new ListNode(value, null, null);
-    this.append(newTail);
+    return this.append(newTail);
   }
 
+  /**
+   * @param {ListNode} node
+   * @return {ListNode} appended node
+   */
   append(node) {
     if (!this.tail) {
       this.tail = this.head;
@@ -29,8 +37,13 @@ class LinkedList {
     node.prev = this.tail;
     node.next = null;
     this.tail = node;
+    return node;
   }
 
+  /**
+   * @param {ListNode} node
+   * @return {ListNode} prepended node
+   */
   prepend(node) {
     if (node === this.head) {
       throw new Error(`Cannot call prepend on the head`);
@@ -40,13 +53,22 @@ class LinkedList {
     node.prev = null;
     node.next = oldHead;
     this.head = node;
+    return node;
   }
 
+  /**
+   * @param {number} value
+   * @return {ListNode} prepended node
+   */
   prependValue(value) {
     const node = new ListNode(value);
-    this.prepend(node);
+    return this.prepend(node);
   }
 
+  /**
+   * @param {void}
+   * @return {array} values
+   */
   getValues() {
     let currentNode = this.head;
     let values = [];
@@ -57,6 +79,10 @@ class LinkedList {
     return values;
   }
 
+  /**
+   * @param {ListNode} node
+   * @return {ListNode} removed node
+   */
   delete(node) {
     // edge case, node == head
     if (node.prev === null) {
@@ -72,12 +98,24 @@ class LinkedList {
       node.prev.next = null;
       node.prev = null;
     }
+
+    return node;
   }
 
+  /**
+   * @param {void}
+   * @return {ListNode} removed node
+   */
   pop() {
-    this.delete(this.tail);
+    return this.delete(this.tail);
   }
 
+  /**
+   * @param {ListNode} node
+   * @param {ListNode} left
+   * @param {ListNode} right
+   * @return {void}
+   */
   insert(node, left, right) {
     if (left === null || right === null) {
       throw new Error('Cannot call insert() with null neighbors');
@@ -88,6 +126,11 @@ class LinkedList {
     right.prev = node;
   }
 
+  /**
+   * @param {ListNode} node
+   * @param {number} position
+   * @return {void}
+   */
   insertAt(node, position) {
     let currentNode = this.head;
     let prev;
@@ -98,6 +141,10 @@ class LinkedList {
     this.insert(node, prev, currentNode);
   }
 
+  /**
+   * @param {void}
+   * @return {void}
+   */
   dedup() {
     const seenValues = new Set([]);
     let currentNode = this.head;
@@ -111,7 +158,10 @@ class LinkedList {
     }
   }
 
-  // Return the index of the first node with the given value
+  /**
+   * @param {number} value
+   * @return {number} index of first node where node.value === value
+   */
   findIndex(value) {
     let currentNode = this.head;
     let currentIndex = 0;
@@ -125,12 +175,16 @@ class LinkedList {
     throw new Error(`No node with value ${value} was found`)
   }
 
+  /**
+   * @param {number} value
+   * @return {void}
+   * Partitions the list into a sections that are less than/greater than param.
+   */
   partition(value) {
     let currentNode = this.head;
     while (currentNode !== null) {
       const nextNode = currentNode.next;
       if (currentNode.value < value) {
-        // prepend() is constant time whereas append() is linear
         this.delete(currentNode);
         this.prepend(currentNode);
       }
@@ -138,6 +192,10 @@ class LinkedList {
     }
   }
 
+  /**
+   * @param {void}
+   * @return {Boolean} True if the entire list is a palindrome.
+   */
   isPalindrome() {
     const values = this.getValues();
     let currentNode = this.head;
@@ -150,8 +208,10 @@ class LinkedList {
     return true;
   }
 
-  // If the list has an internal loop, returns the node at the beginning of the loop
-  // Returns null otherwise
+  /**
+   * @param {void}
+   * @return {ListNode, null} ListNode where circular reference occurs, null otherwise
+   */
   getLoopNode() {
     const seenNodes = new Set();
     let currentNode = this.head;
@@ -166,11 +226,20 @@ class LinkedList {
   }
 }
 
+/**
+ * @param {void}
+ * @return {void} all node.values converted to a single int
+ */
 const listToInt = list => parseInt(list.getValues().reverse().join(''), 10);
 
-// Sum two numbers represented by linked lists, where each node is a digit.
-// eg, 617 + 295 = 912 is represented by
-// (7 -> 1 -> 6) + (5 -> 9 -> 2) = (2 -> 1 -> 9)
+/**
+ * @param {LinkedList} list1
+ * @param {LinkedList} list2
+ * @return {LinkedList} Sum two numbers represented by linked lists,
+ * where each node is a digit, eg
+ * eg, 617 + 295 = 912 is represented by
+ * (7 -> 1 -> 6) + (5 -> 9 -> 2) = (2 -> 1 -> 9)
+ */
 const sumLists = (list1, list2) => {
   const sum = listToInt(list1) + listToInt(list2);
   const sumArray = sum.toString(10).split('').map(Number);

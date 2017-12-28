@@ -38,10 +38,12 @@ describe('LinkedList', () => {
   it('pop() will remove the tail and set it to the previous node', () => {
     const testArray = [4, 2, 6, 12, 2];
     const linkedList = new LinkedList(testArray);
-    linkedList.pop();
+    const twoNode = linkedList.pop();
     expect(linkedList.tail.value).toBe(12);
-    linkedList.pop();
+    const twelveNode = linkedList.pop();
     expect(linkedList.tail.value).toBe(6);
+    expect(twoNode.value).toBe(2);
+    expect(twelveNode.value).toBe(12);
   });
   it('getValues returns the values of each node in order', () => {
     const testArray = [4, 2, 6, 12, 2];
