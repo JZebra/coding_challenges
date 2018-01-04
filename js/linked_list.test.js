@@ -48,26 +48,36 @@ describe('LinkedList', () => {
   it('getValues returns the values of each node in order', () => {
     const testArray = [4, 2, 6, 12, 2];
     const linkedList = new LinkedList(testArray);
-    expect(linkedList.getValues()).toEqual(expect.arrayContaining([4, 2, 6, 12, 2]));
+    expect(linkedList.getValues()).toEqual([4, 2, 6, 12, 2]);
+  });
+  it('delete() deletes a node', () => {
+    const testArray = [4, 2, 6, 12, 2];
+    const linkedList = new LinkedList(testArray);
+    linkedList.delete(linkedList.head);
+    expect(linkedList.getValues()).toEqual([2, 6, 12, 2]);
+    linkedList.delete(linkedList.tail);
+    expect(linkedList.getValues()).toEqual([2, 6, 12]);
+    linkedList.delete(linkedList.head.next);
+    expect(linkedList.getValues()).toEqual([2, 12]);
   });
   it('dedup() will remove duplicate values', () => {
     const testArray = [4, 2, 4, 7, 2];
     const linkedList = new LinkedList(testArray);
     linkedList.dedup()
-    expect(linkedList.getValues()).toEqual(expect.arrayContaining([4, 2, 7]));
+    expect(linkedList.getValues()).toEqual([4, 2, 7]);
   });
   it('insertAt() inserts a node at an index', () => {
     const testArray = [4, 2, 6, 7];
     const linkedList = new LinkedList(testArray);
     const newNode = new ListNode(100);
     linkedList.insertAt(newNode, 2)
-    expect(linkedList.getValues()).toEqual(expect.arrayContaining([4, 2, 100, 6, 7]));
+    expect(linkedList.getValues()).toEqual([4, 2, 100, 6, 7]);
   });
   it('prepend(node) inserts a new node at the head of the list', () => {
     const testArray = [1, 2, 3];
     const linkedList = new LinkedList(testArray);
     linkedList.prepend(new ListNode(0));
-    expect(linkedList.getValues()).toEqual(expect.arrayContaining([0, 1, 2, 3]));
+    expect(linkedList.getValues()).toEqual([0, 1, 2, 3]);
   });
   it('partition(value) partitions the list into values less than/greater than the value', () => {
     const testArray = [3, 5, 8, 5, 10, 2, 1];
@@ -118,6 +128,6 @@ describe('sumLists', () => {
     const list1 = new LinkedList([7, 1, 6]);
     const list2 = new LinkedList([5, 9, 2]);
     const sumList = sumLists(list1, list2);
-    expect(sumList.getValues()).toEqual(expect.arrayContaining([2, 1, 9]));
+    expect(sumList.getValues()).toEqual([2, 1, 9]);
   });
 });

@@ -1,5 +1,6 @@
 class ListNode {
-  constructor(value, prev = null, next = null) {
+  constructor(value, prev = null, next = null, key = null) {
+    this.key = key;
     this.value = value;
     this.prev = prev;
     this.next = next;
@@ -242,7 +243,7 @@ const listToInt = list => parseInt(list.getValues().reverse().join(''), 10);
  */
 const sumLists = (list1, list2) => {
   const sum = listToInt(list1) + listToInt(list2);
-  const sumArray = sum.toString(10).split('').map(Number);
+  const sumArray = sum.toString(10).split('').map(Number).reverse();
   return new LinkedList(sumArray);
 };
 
