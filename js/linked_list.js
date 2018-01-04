@@ -1,19 +1,19 @@
 class ListNode {
-  constructor(value, prev = null, next = null, key = null) {
-    this.key = key;
+  constructor(value, key = null, prev = null, next = null) {
     this.value = value;
+    this.key = key;
     this.prev = prev;
     this.next = next;
   }
 }
 
 class LinkedList {
-  constructor(itemArray) {
+  constructor(itemArray = []) {
     // copy the array so that we don't transform the input itemArray
     const items = itemArray.slice();
-    this.head = new ListNode(items.shift());
-    // tail will be set by the append operation
-    this.tail = null;
+    // the head node is always a null node
+    this.head = new ListNode(null);
+    this.tail = this.head;
     items.map(item => this.appendValue(item));
   }
 
@@ -22,7 +22,7 @@ class LinkedList {
    * @return {ListNode} appended node
    */
   appendValue(value) {
-    const newTail = new ListNode(value, null, null);
+    const newTail = new ListNode(value);
     return this.append(newTail);
   }
 
@@ -31,9 +31,6 @@ class LinkedList {
    * @return {ListNode} appended node
    */
   append(node) {
-    if (!this.tail) {
-      this.tail = this.head;
-    }
     this.tail.next = node;
     node.prev = this.tail;
     node.next = null;
@@ -46,14 +43,18 @@ class LinkedList {
    * @return {ListNode} prepended node
    */
   prepend(node) {
-    if (node === this.head) {
-      throw new Error(`Cannot call prepend on the head`);
+    if (this.head === this.tail) {
+      this.tail = node;
     }
-    const oldHead = this.head;
-    oldHead.prev = node;
-    node.prev = null;
-    node.next = oldHead;
-    this.head = node;
+
+    node.prev = this.head;
+    node.next = this.head.next;
+
+    if (this.head.next) {
+      this.head.next.prev = node;
+    }
+
+    this.head.next = node;
     return node;
   }
 
@@ -71,8 +72,8 @@ class LinkedList {
    * @return {array} values
    */
   getValues() {
-    let currentNode = this.head;
-    let values = [];
+    let currentNode = this.head.next;
+    const values = [];
     while (currentNode !== null) {
       values.push(currentNode.value);
       currentNode = currentNode.next;
@@ -85,19 +86,13 @@ class LinkedList {
    * @return {ListNode} removed node
    */
   delete(node) {
-    // edge case, node == head
-    if (node.prev === null) {
-      this.head = node.next;
-      this.head.prev = null;
-    } else {
-      node.prev.next = node.next;
-    }
-
+    node.prev.next = node.next;
     // edge case, node == tail
     if (node.next === null) {
       this.tail = node.prev;
-      node.prev.next = null;
       node.prev = null;
+    } else {
+      node.next.prev = node.prev;
     }
 
     return node;
@@ -133,7 +128,7 @@ class LinkedList {
    * @return {void}
    */
   insertAt(node, position) {
-    let currentNode = this.head;
+    let currentNode = this.head.next;
     let prev;
     for (let i = 0; i < position; i++) {
       prev = currentNode;
@@ -148,7 +143,7 @@ class LinkedList {
    */
   dedup() {
     const seenValues = new Set([]);
-    let currentNode = this.head;
+    let currentNode = this.head.next;
     while (currentNode !== null) {
       if (seenValues.has(currentNode.value)) {
         this.delete(currentNode);
@@ -164,7 +159,7 @@ class LinkedList {
    * @return {number} index of first node where node.value === value
    */
   findIndex(value) {
-    let currentNode = this.head;
+    let currentNode = this.head.next;
     let currentIndex = 0;
     while (currentNode !== null) {
       if (currentNode.value === value) {
@@ -182,7 +177,7 @@ class LinkedList {
    * Partitions the list into a sections that are less than/greater than param.
    */
   partition(value) {
-    let currentNode = this.head;
+    let currentNode = this.head.next;
     while (currentNode !== null) {
       const nextNode = currentNode.next;
       if (currentNode.value < value) {
@@ -199,7 +194,7 @@ class LinkedList {
    */
   isPalindrome() {
     const values = this.getValues();
-    let currentNode = this.head;
+    let currentNode = this.head.next;
     while (currentNode !== null) {
       if (currentNode.value !== values.pop()) {
         return false;
@@ -215,7 +210,7 @@ class LinkedList {
    */
   getLoopNode() {
     const seenNodes = new Set();
-    let currentNode = this.head;
+    let currentNode = this.head.next;
     while (currentNode !== null) {
       if (seenNodes.has(currentNode)) {
         return currentNode;

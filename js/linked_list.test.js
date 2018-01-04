@@ -8,7 +8,7 @@ describe('LinkedList', () => {
   it('creates a linked list with each node pointing to the next node', () => {
     const testArray = [4, 2, 6, 12, 2];
     const linkedList = new LinkedList(testArray);
-    let currentNode = linkedList.head;
+    let currentNode = linkedList.head.next;
     testArray.forEach((value) => {
       expect(currentNode.value).toBe(value);
       currentNode = currentNode.next;
@@ -17,11 +17,7 @@ describe('LinkedList', () => {
   it('creates a linked list with each node pointing to the previous node', () => {
     const testArray = [4, 2, 6, 12, 2];
     const linkedList = new LinkedList(testArray);
-    let currentNode = linkedList.head;
-    while (currentNode.next !== null) {
-      // find the tail node
-      currentNode = currentNode.next;
-    }
+    let currentNode = linkedList.tail;
     testArray.reverse().forEach((value) => {
       expect(currentNode.value).toBe(value);
       currentNode = currentNode.prev;
@@ -53,11 +49,11 @@ describe('LinkedList', () => {
   it('delete() deletes a node', () => {
     const testArray = [4, 2, 6, 12, 2];
     const linkedList = new LinkedList(testArray);
-    linkedList.delete(linkedList.head);
+    linkedList.delete(linkedList.head.next);
     expect(linkedList.getValues()).toEqual([2, 6, 12, 2]);
     linkedList.delete(linkedList.tail);
     expect(linkedList.getValues()).toEqual([2, 6, 12]);
-    linkedList.delete(linkedList.head.next);
+    linkedList.delete(linkedList.head.next.next);
     expect(linkedList.getValues()).toEqual([2, 12]);
   });
   it('dedup() will remove duplicate values', () => {
@@ -78,13 +74,14 @@ describe('LinkedList', () => {
     const linkedList = new LinkedList(testArray);
     linkedList.prepend(new ListNode(0));
     expect(linkedList.getValues()).toEqual([0, 1, 2, 3]);
+
   });
   it('partition(value) partitions the list into values less than/greater than the value', () => {
     const testArray = [3, 5, 8, 5, 10, 2, 1];
     const linkedList = new LinkedList(testArray);
     const partitionValue = 5;
     linkedList.partition(partitionValue);
-    let currentNode = linkedList.head;
+    let currentNode = linkedList.head.next;
     let partitionBroken = false;
     while (currentNode !== null) {
       if (currentNode.value >= partitionValue) {
