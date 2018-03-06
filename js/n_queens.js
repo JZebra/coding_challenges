@@ -76,6 +76,11 @@ const solve = (board) => {
   }
 }
 
+// leetcode wants each row to be a string, not an array
+const formatSolution = (board) => {
+  return board.map(row => row.join(''));
+}
+
 /**
  * @param {number} n
  * @return {string[][]}
@@ -100,9 +105,13 @@ const solveNQueens = (n) => {
     // try to solve
     const solution = solve(board);
     if (solution) {
-      solutions.push(solution);
+      solutions.push(formatSolution(solution));
     }
   }
 
   return solutions;
 };
+
+// console.log(solveNQueens(4))
+// console.log(solveNQueens(6))
+// console.log(solveNQueens(8))
