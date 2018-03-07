@@ -55,27 +55,6 @@ const countSquares = (board, squareType) => {
   }, 0)
 };
 
-const solve = (board) => {
-  const openSpaceCount = countSquares(board, BLANK);
-  const queenCount = countSquares(board, QUEEN);
-  const size = board.length;
-  if (openSpaceCount === 0 && queenCount === size) {
-    return board;
-  }
-
-  // optimization, we can have max 1 queen per row, so start at current queencount
-  for (let y = queenCount; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      if (board[y][x] === BLANK) {
-        solution = solve(markQueen(board, y, x))
-        if (solution) {
-          return solution;
-        }
-      }
-    }
-  }
-}
-
 // leetcode wants each row to be a string, not an array
 const formatSolution = (board) => {
   return board.map(row => row.join(''));
@@ -97,18 +76,26 @@ const solveNQueens = (n) => {
   }
 
   const solutions = [];
-  // each queen position on the first row will have at most one solution
-  for (let i = 0; i < n; i++) {
-    let board = createBoard(n);
-    board = markQueen(board, 0, i);
-
-    // try to solve
-    const solution = solve(board);
-    if (solution) {
-      solutions.push(formatSolution(solution));
+  const solve = (board) => {
+    const openSpaceCount = countSquares(board, BLANK);
+    const queenCount = countSquares(board, QUEEN);
+    const size = board.length;
+    if (openSpaceCount === 0 && queenCount === size) {
+      solutions.push(formatSolution(board))
+    }
+    // we can have max 1 queen per row, so start at current queencount
+    for (let y = queenCount; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        if (board[y][x] === BLANK) {
+          solve(markQueen(board, y, x))
+        }
+      }
+      return false;
     }
   }
 
+  let board = createBoard(n);
+  solve(board);
   return solutions;
 };
 
