@@ -20,7 +20,7 @@ const isValidNode = (node, min, max) => {
  * @param {TreeNode} root
  * @return {boolean}
  */
-const isValidBST = (root) => {
+const isValidBST_BFS = (root) => {
   if (!root) {
     return true;
   }
@@ -46,3 +46,33 @@ const isValidBST = (root) => {
 
   return true;
 };
+
+const inOrderTraverse = (node, callback) => {
+    if (!node) {
+        return null;
+    }
+    if (node.left) {
+        inOrderTraverse(node.left, callback);
+    }
+
+    callback(node)
+
+    if (node.right) {
+        inOrderTraverse(node.right, callback);
+    }
+}
+
+// BSTs have node values in sorted order for in order traversal
+const isValidBST = (root) => {
+  let currentMin = null;
+  let isSorted = true;
+  inOrderTraverse(root, (node) => {
+      if (currentMin != null && currentMin >= node.val) {
+          isSorted = false;
+      } else {
+          currentMin = node.val;
+      }
+  });
+
+  return isSorted;
+}
